@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 import * as firebase from 'firebase';
-
 import Login from './components/login'
+import Kare from './components/kare'
 
 class App extends Component {
   constructor () {
     super();
     this.state = {
+      isLoggedIn : firebase.auth().currentUser != null ? true : false,
       speed: 10
     };
-  }
 
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+      this.setState({
+        isLoggedIn : firebaseUser ? true : false
+      });  
+    });
+    
+    
+  }
+  
   componentDidMount() {
     const rootRef = firebase.database().ref();
     const speedRef = rootRef.child('speed');
@@ -21,21 +31,22 @@ class App extends Component {
         speed : snap.val()
       });  
     });
-    
+    console.log(this.state);
+    if (!this.state.isLoggedIn) {
+      this.props.history.push('login');
+    }
   }
-
+  
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          {this.state.speed}
-        </p>
-        <Login />
+      <BrowserRouter>
+      <div>
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route exact path="/" component={Kare} />
+        </Switch>
       </div>
+    </BrowserRouter>
     );
   }
 }
