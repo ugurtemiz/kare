@@ -1,42 +1,46 @@
 import React, { Component } from 'react';
-import * as firebase from 'firebase';
+import { login } from '../helpers/auth'
+
+function setErrorMsg(error) {
+  return {
+    loginMessage: error
+  }
+}
 
 class Login extends Component {
+    state = { loginMessage: null }
     
-    constructor(props) {
-        super(props);
-        this.loginClick = this.loginClick.bind(this);
-
-        firebase.auth().onAuthStateChanged(firebaseUser => {
-            if (firebaseUser) {
-                console.log(firebaseUser);
-            } else {
-                console.log('not logged in');
-            }
-        });
-
+    handleSubmit = (e) => {
+      e.preventDefault()
+      login(this.email.value, this.pw.value)
+        .catch((error) => {
+            this.setState(setErrorMsg('Invalid username/password.'))
+          })
     }
 
-    loginClick() {
-        console.log(this.emailInput.value);
-        console.log(this.passwordInput.value);
-        const auth = firebase.auth();
-
-        const promise = auth.signInWithEmailAndPassword(this.emailInput.value, this.passwordInput.value);
-        promise
-            //.then( user => console.log(user) )
-            .catch( e => console.log(e.message) );
-
-    }
-  
     render() {
       return (
-        <div>
-            <input id="email" type="email" placeholder="Email" 
-                ref={(input) => { this.emailInput = input; }} />
-            <input id="password" type="password" placeholder="Password"
-                ref={(input) => { this.passwordInput = input; }} />
-            <button id="login" onClick={this.loginClick}>Login</button>
+        <div className="col-sm-6 col-sm-offset-3">
+          <h1> Login </h1>
+          <form onSubmit={this.handleSubmit}>
+            <div className="form-group">
+              <label>Email</label>
+              <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>
+            </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
+            </div>
+            {
+              this.state.loginMessage &&
+              <div className="alert alert-danger" role="alert">
+                <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span className="sr-only">Error:</span>
+                &nbsp;{this.state.loginMessage}
+              </div>
+            }
+            <button type="submit" className="btn btn-primary">Login</button>
+          </form>
         </div>
       );
     }
