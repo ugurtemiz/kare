@@ -4,8 +4,8 @@ import './App.css';
 import Login from './components/login';
 import Home from './components/home';
 import Dashboard from './components/dashboard';
-import { logout } from './helpers/auth'
-import { firebaseAuth } from './config/constants'
+import { logout } from './helpers/auth';
+import { firebaseAuth } from './config/constants';
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
   return (

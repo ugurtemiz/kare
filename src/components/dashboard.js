@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import PaperExampleSimple from './PaperExampleSimple';
 
 class Dashboard extends Component {
-    
+
     render() {
       return (
         <div>
-            Dashboard
+          <h1>Dashboard</h1>
+          <PaperExampleSimple />
         </div>
       );
     }
