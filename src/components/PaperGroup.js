@@ -12,7 +12,7 @@ const style = {
   display: 'inline-block',
 };
 
-const PaperExampleSimple = () => (
+const PaperGroup = () => (
   <div>
       <Ripples>
         <Paper style={style} zDepth={3} />
@@ -38,4 +38,4 @@ const PaperExampleSimple = () => (
   </div>
 );
 
-export default PaperExampleSimple;
+export default PaperGroup;

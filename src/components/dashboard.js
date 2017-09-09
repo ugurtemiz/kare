@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PaperExampleSimple from './PaperExampleSimple';
+import PaperGroup from './PaperGroup';
 
 class Dashboard extends Component {
 
@@ -7,7 +7,7 @@ class Dashboard extends Component {
       return (
         <div>
           <h1>Dashboard</h1>
-          <PaperExampleSimple />
+          <PaperGroup />
         </div>
       );
     }
