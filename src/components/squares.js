@@ -18,7 +18,7 @@ class Squares extends Component {
         for (var key in array) {
             if (array.hasOwnProperty(key)) {
                 result.push(
-                    <Square key={key} name={array[key].name} />
+                    <Square key={key} name={array[key].name} quantity={array[key].quantity}/>
                 );
             }
         }  

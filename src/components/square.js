@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { updateQuantity } from '../helpers/data'
 
 import Paper from 'material-ui/Paper';
 import Ripples from 'react-ripples'
@@ -15,10 +16,24 @@ const style = {
 };
 
 class Square extends Component {
+    constructor(props) {
+        super(props)
+
+        this.handleClick = this.handleClick.bind(this);
+    }
     
+    handleClick() {
+        console.log(this.props.name)
+        console.log(this.props.quantity)
+
+        updateQuantity(this.props.name, this.props.quantity, () => {
+            console.log("Yeeey");
+        } );
+    }
+
     render() {
         return (
-            <Ripples>
+            <Ripples onClick={this.handleClick}>
                 <Paper style={style} zDepth={3}>
                     {this.props.name}
                 </Paper>

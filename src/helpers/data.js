@@ -6,3 +6,10 @@ export function retrieveSquares (callback) {
     callback(_.without(snapshot.val(), undefined));
   });
 }
+
+export function updateQuantity (name, quantity, callback) {
+  ref.child('squares').set({
+    name : name,
+    quantity : ++quantity
+  });
+}
