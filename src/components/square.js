@@ -23,10 +23,9 @@ class Square extends Component {
     }
     
     handleClick() {
-        console.log(this.props.name)
-        console.log(this.props.quantity)
-
-        updateQuantity(this.props.name, this.props.quantity, () => {
+        console.log(this.props)
+        
+        updateQuantity(this.props.tstamp, this.props.name, this.props.quantity, () => {
             console.log("Yeeey");
         } );
     }
