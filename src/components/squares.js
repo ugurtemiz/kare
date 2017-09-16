@@ -18,17 +18,12 @@ class Squares extends Component {
         for (var key in array) {
             if (array.hasOwnProperty(key)) {
                 result.push(
-                    <Square key={array[key].key} 
-                            tstamp={array[key].key} 
-                            name={array[key].name} 
-                            quantity={array[key].quantity}
-                    />
+                    <Square key={key} name={array[key].name} quantity={array[key].quantity}/>
                 );
             }
         }  
         return result;
     }
-
     componentDidMount () {
         retrieveSquares( (squares) => {
             this.setState({ squares });

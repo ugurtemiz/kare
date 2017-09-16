@@ -4,7 +4,6 @@ import './App.css';
 import Login from './components/login';
 import Home from './components/home';
 import Dashboard from './components/dashboard';
-import Settings from './components/settings';
 import { logout } from './helpers/auth';
 import { firebaseAuth } from './config/constants';
 
@@ -67,9 +66,6 @@ class App extends Component {
                 <Link to="/dashboard" className="navbar-brand">Dashboard</Link>
               </li>
               <li>
-                <Link to="/settings" className="navbar-brand">Settings</Link>
-              </li>
-              <li>
                 {this.state.authed
                   ? <button
                       style={{border: 'none', background: 'transparent'}}
@@ -89,7 +85,6 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <PublicRoute authed={this.state.authed} path='/login' component={Login} />
             <PrivateRoute authed={this.state.authed} path='/dashboard' component={Dashboard} />
-            <PrivateRoute authed={this.state.authed} path='/settings' component={Settings} />
             <Route render={() => <h3>No Match</h3>} />
           </Switch>
         </div>
