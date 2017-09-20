@@ -3,6 +3,14 @@ import { retrieveSquares, dailyExport, resetQuantities, addSquare } from '../hel
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
 
 class Settings extends Component {
   constructor (props) {
@@ -55,7 +63,10 @@ class Settings extends Component {
     for (var key in array) {
       if (array.hasOwnProperty(key)) {
             result.push(
-                <li key={key}> {array[key].name} --> Quantity: {array[key].quantity}</li> 
+              <TableRow key={key}>
+                <TableRowColumn>{array[key].name}</TableRowColumn>
+                <TableRowColumn>{array[key].quantity}</TableRowColumn>
+              </TableRow>
             );
         }
     }  
@@ -79,9 +90,31 @@ class Settings extends Component {
               />
               <RaisedButton type="submit" label="Primary" primary={true} style={{margin: 12}} />
           </form>
-          <ul>
-            {this.renderSquares()}
-          </ul>
+          <Table>
+            <TableHeader 
+              displaySelectAll={false}
+              adjustForCheckbox={false}
+              enableSelectAll={false}
+            >
+              <TableRow>
+                <TableHeaderColumn colSpan="3" tooltip="Product List" style={{textAlign: 'center'}}>
+                  Product List
+                </TableHeaderColumn>
+              </TableRow>
+              <TableRow>
+                <TableHeaderColumn tooltip="Name" style={{width:'50%'}} >Name</TableHeaderColumn>
+                <TableHeaderColumn tooltip="Quantity" style={{width:'50%'}}>Quantity</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody
+              displayRowCheckbox={false}
+              deselectOnClickaway={false}
+              showRowHover={true}
+              stripedRows={false}
+            >
+              {this.renderSquares()}
+            </TableBody>
+          </Table>
       </div>
     );
   }
