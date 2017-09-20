@@ -7,8 +7,6 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-// DELETE it
-//import history from './history'
 injectTapEventPlugin();
 
 ReactDOM.render((

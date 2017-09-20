@@ -8,6 +8,11 @@ import Settings from './components/settings';
 import { logout } from './helpers/auth';
 import { firebaseAuth } from './config/constants';
 
+import AppBar from 'material-ui/AppBar';
+import Drawer from 'material-ui/Drawer';
+import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
+
 function PrivateRoute ({component: Component, authed, ...rest}) {
   return (
     <Route
@@ -34,8 +39,10 @@ class App extends Component {
   constructor () {
     super();
     this.state = {
-      authed : firebaseAuth.currentUser != null ? true : false
+      authed : firebaseAuth.currentUser != null ? true : false,
+      open: false
     };
+    
   }
   
   componentDidMount() {
@@ -45,56 +52,65 @@ class App extends Component {
       })
     })
   }
-
+  
   componentWillUnmount () {
     this.removeListener()
   }
   
+  handleToggle = () => this.setState({open: !this.state.open});
+  handleClose = () => this.setState({open: false});
+  
   render() {
     return (
-      <BrowserRouter>
       <div>
-        <nav className="navbar navbar-default navbar-static-top">
-          <div className="container">
-            <div className="navbar-header">
-              <Link to="/" className="navbar-brand">Kare</Link>
+        <BrowserRouter>
+          <div>
+            <AppBar 
+              title="Kare Kahve" 
+              onLeftIconButtonTouchTap={this.handleToggle}
+              iconElementRight={
+                this.state.authed
+                ? <FlatButton 
+                    label="Logout" 
+                    onClick={() => {
+                      logout()
+                    }}
+                  /> 
+                : <FlatButton 
+                    label="Login" 
+                    containerElement={<Link to="/login" />}
+                  /> 
+              }
+            />
+            <Drawer
+              docked={false}
+              width={200}
+              open={this.state.open}
+              onRequestChange={(open) => this.setState({open})}
+            >
+              <MenuItem 
+                onClick={this.handleClose}
+                containerElement={<Link to="/dashboard" />}
+                primaryText="Dashboard"
+              />
+              <MenuItem 
+                onClick={this.handleClose}
+                containerElement={<Link to="/settings" />}
+                primaryText="Settings"
+              />
+            </Drawer>
+            <div className="container">
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <PublicRoute  authed={this.state.authed} path='/login'     component={Login} />
+                <PrivateRoute authed={this.state.authed} path='/dashboard' component={Dashboard} />
+                <PrivateRoute authed={this.state.authed} path='/settings'  component={Settings} />
+                <Route render={() => <h3>No Match</h3>} />
+              </Switch>
             </div>
-            <ul className="nav navbar-nav pull-right">
-              <li>
-                <Link to="/" className="navbar-brand">Home</Link>
-              </li>
-              <li>
-                <Link to="/dashboard" className="navbar-brand">Dashboard</Link>
-              </li>
-              <li>
-                <Link to="/settings" className="navbar-brand">Settings</Link>
-              </li>
-              <li>
-                {this.state.authed
-                  ? <button
-                      style={{border: 'none', background: 'transparent'}}
-                      onClick={() => {
-                        logout()
-                      }}
-                      className="navbar-brand">Logout</button>
-                  : <span>
-                      <Link to="/login" className="navbar-brand">Login</Link>
-                    </span>}
-              </li>
-            </ul>
           </div>
-        </nav>
-        <div className="container">
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <PublicRoute authed={this.state.authed} path='/login' component={Login} />
-            <PrivateRoute authed={this.state.authed} path='/dashboard' component={Dashboard} />
-            <PrivateRoute authed={this.state.authed} path='/settings' component={Settings} />
-            <Route render={() => <h3>No Match</h3>} />
-          </Switch>
-        </div>
-      </div>
-    </BrowserRouter>
+        </BrowserRouter>
+      </div>  
     );
   }
 }

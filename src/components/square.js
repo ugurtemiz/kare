@@ -32,7 +32,9 @@ class Square extends Component {
         return (
             <Ripples onClick={this.handleClick}>
                 <Paper style={style} zDepth={3}>
-                    {this.props.name}
+                    <div style={{marginTop:40}}>
+                        {this.props.name}
+                    </div>
                 </Paper>
             </Ripples>
         );

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { retrieveSquares, dailyExport, resetQuantities, addSquare } from '../helpers/data'
 
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+
 class Settings extends Component {
   constructor (props) {
     super(props);
@@ -19,14 +22,14 @@ class Settings extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    addSquare(this.name.value);
+    addSquare(this.name.getValue());
   }
   
   handleDailyReport = (e) => {
     e.preventDefault()
     console.log(this.state.squares)
     dailyExport(this.state.squares, () => {
-      this.setState({ report : Object.assign({}, this.state.squares) });
+      this.setState({ report : JSON.parse(JSON.stringify(this.state.squares)) });
       resetQuantities(this.state.squares, () => {
         console.log('everything done. show the graph');
       })
@@ -69,11 +72,12 @@ class Settings extends Component {
             {this.renderReport()}
           </ul>
           <form onSubmit={this.handleSubmit}>
-            <div className="form-group">
-              <label>Name</label>
-              <input className="form-control" ref={(name) => this.name = name} placeholder="Name"/>
-            </div>
-            <button type="submit" className="btn btn-primary">Add</button>
+              <TextField
+                hintText="Cappuccino"
+                floatingLabelText="Product Name"
+                ref={(name) => this.name = name}
+              />
+              <RaisedButton type="submit" label="Primary" primary={true} style={{margin: 12}} />
           </form>
           <ul>
             {this.renderSquares()}
